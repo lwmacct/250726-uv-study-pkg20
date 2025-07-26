@@ -171,7 +171,33 @@ except ImportError:
 
 ## 我们的实现
 
-在本项目中，我们提供了：
+在本项目中，我们选择了 **importlib.metadata** 作为最终方案：
+
+### 当前实现
+
+```python
+# src/pkg20/__init__.py
+try:
+    from importlib.metadata import version, metadata
+    __version__ = version("pkg20")
+    package_metadata = metadata("pkg20")
+    __author__ = package_metadata.get("Author", "lwmacct")
+except ImportError:
+    __version__ = "0.1.1"
+    __author__ = "lwmacct"
+except Exception:
+    __version__ = "0.1.1"
+    __author__ = "lwmacct"
+```
+
+### 优势
+
+- ✅ **零依赖**：只使用 Python 标准库
+- ✅ **简单可靠**：代码简洁，易于维护
+- ✅ **性能优秀**：直接读取包元数据
+- ✅ **广泛支持**：Python 3.8+ 原生支持
+
+### 提供的工具
 
 1. **工具模块**：`src/pkg20/utils/package_info.py`
    - 封装了包信息获取功能

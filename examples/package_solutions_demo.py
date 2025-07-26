@@ -64,32 +64,20 @@ def demo_solution_3_setuptools_scm():
     """方案三：使用 setuptools-scm（需要配置）"""
     print("\n=== 方案三：使用 setuptools-scm ===")
 
-    try:
-        # 这个需要在 pyproject.toml 中配置
-        # [tool.setuptools_scm]
-        # version_scheme = "python-simplified-semver"
-        # local_scheme = "node-and-timestamp"
-
-        print("需要配置 pyproject.toml:")
-        print("[tool.setuptools_scm]")
-        print("version_scheme = \"python-simplified-semver\"")
-        print("local_scheme = \"node-and-timestamp\"")
-        print("⚠️  需要额外配置")
-    except Exception as e:
-        print(f"❌ 失败: {e}")
+    print("需要配置 pyproject.toml:")
+    print("[tool.setuptools_scm]")
+    print("version_scheme = \"python-simplified-semver\"")
+    print("local_scheme = \"node-and-timestamp\"")
+    print("⚠️  需要额外配置")
+    print("💡 已从依赖中移除，如需使用请手动安装")
 
 
 def demo_solution_4_pkg_resources():
     """方案四：使用 pkg_resources（已弃用）"""
     print("\n=== 方案四：使用 pkg_resources（已弃用） ===")
 
-    try:
-        import pkg_resources
-        version = pkg_resources.get_distribution("pkg20").version
-        print(f"版本: {version}")
-        print("⚠️  pkg_resources 已弃用，建议使用 importlib.metadata")
-    except Exception as e:
-        print(f"❌ 失败: {e}")
+    print("⚠️  pkg_resources 已弃用，建议使用 importlib.metadata")
+    print("💡 不再演示，直接跳过")
 
 
 def demo_solution_5_third_party_packages():
@@ -134,11 +122,12 @@ def main():
     demo_solution_5_third_party_packages()
 
     print("\n=== 推荐方案 ===")
-    print("✅ 方案一：importlib.metadata - 标准库，推荐")
+    print("✅ 方案一：importlib.metadata - 标准库，推荐（当前使用）")
     print("✅ 方案二：我们的工具模块 - 封装好的，易用")
     print("⚠️  方案三：setuptools-scm - 需要配置，适合 git 项目")
     print("❌ 方案四：pkg_resources - 已弃用")
     print("⚠️  方案五：第三方包 - 根据项目需求选择")
+    print("\n🎯 当前项目使用 importlib.metadata，依赖已清理完成！")
 
 
 if __name__ == "__main__":
