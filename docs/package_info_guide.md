@@ -4,6 +4,8 @@
 
 这个功能允许你的 Python 包自动从 `pyproject.toml` 中读取包名、版本号和作者信息，无需手动维护多个地方的版本号。
 
+**推荐方案：使用 importlib.metadata（Python 3.8+ 标准库）**
+
 ## 功能特性
 
 ✅ **自动包名获取**：通过 `__package__` 或 `__name__` 自动获取当前包名  
@@ -16,35 +18,28 @@
 
 ### 1. 基本使用
 
-将以下代码复制到你的 `__init__.py` 文件中：
+**方案一：直接使用 importlib.metadata（推荐）**
 
 ```python
-def _get_package_info():
-    """自动获取包信息，支持复制到其他项目使用"""
-    # 默认值配置
-    DEFAULT_VERSION = "0.1.0"
-    DEFAULT_AUTHOR = "Unknown"
-    
-    try:
-        from importlib.metadata import version, metadata
-        # 获取当前包名（通过 __package__ 或 __name__）
-        package_name = __package__ or __name__.split('.')[0]
-        
-        # 获取版本和作者信息
-        __version__ = version(package_name)
-        package_metadata = metadata(package_name)
-        __author__ = package_metadata.get("Author", DEFAULT_AUTHOR)
-        
-        return __version__, __author__
-    except ImportError:
-        # 兼容性处理：如果 importlib.metadata 不可用，使用默认值
-        return DEFAULT_VERSION, DEFAULT_AUTHOR
-    except Exception:
-        # 如果获取失败，使用默认值
-        return DEFAULT_VERSION, DEFAULT_AUTHOR
+# __init__.py
+try:
+    from importlib.metadata import version, metadata
+    __version__ = version("your_package_name")
+    package_metadata = metadata("your_package_name")
+    __author__ = package_metadata.get("Author", "Unknown")
+except ImportError:
+    __version__ = "0.1.0"
+    __author__ = "Unknown"
+```
+
+**方案二：使用工具模块**
+
+```python
+# __init__.py
+from .package_info import get_current_package_info
 
 # 自动获取包信息
-__version__, __author__ = _get_package_info()
+__version__, __author__ = get_current_package_info()
 ```
 
 ### 2. 确保 pyproject.toml 配置正确
@@ -73,28 +68,28 @@ print(f"作者: {your_package.__author__}")
 运行以下命令来测试功能是否正常工作：
 
 ```bash
-# 基本版本号测试
-uv run python examples/version_demo.py
+# 基本使用示例
+uv run python examples/simple_usage.py
 
-# 包信息获取测试
-uv run python examples/package_info_demo.py
+# 基础使用示例
+uv run python examples/basic_usage.py
 
-# 可移植性测试
-uv run python examples/portability_test.py
+# 直接测试包信息
+uv run python -c "import pkg20; print(f'版本: {pkg20.__version__}'); print(f'作者: {pkg20.__author__}')"
 ```
 
 ## 模板文件
 
 - `templates/universal_init_template.py`：通用模板，可直接复制使用
-- `templates/__init__.py.template`：基础模板
 
 ## 优势
 
-1. **单一数据源**：版本号只在 `pyproject.toml` 中维护
-2. **自动同步**：更新 `pyproject.toml` 后，包中的版本号自动更新
-3. **代码可移植**：可以直接复制到其他项目使用，无需修改包名
-4. **向后兼容**：如果 `importlib.metadata` 不可用，会回退到硬编码值
-5. **标准化**：符合现代 Python 包开发的最佳实践
+1. **零依赖**：只使用 Python 标准库
+2. **简单可靠**：代码简洁，易于维护
+3. **性能优秀**：直接读取包元数据
+4. **广泛支持**：Python 3.8+ 原生支持
+5. **向后兼容**：提供完整的错误处理
+6. **标准化**：符合现代 Python 包开发的最佳实践
 
 ## 注意事项
 
