@@ -4,7 +4,7 @@
 展示如何导入和使用DataProcessor类
 """
 
-from py_uv_study_pkg20_250726 import DataProcessor
+from pkg20 import DataProcessor
 import sys
 import os
 

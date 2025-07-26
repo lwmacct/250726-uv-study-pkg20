@@ -4,7 +4,7 @@ Calculator类的测试
 """
 
 # import pytest  # 如果需要运行pytest测试，取消注释
-from py_uv_study_pkg20_250726 import Calculator
+from pkg20 import Calculator
 
 
 class TestCalculator:

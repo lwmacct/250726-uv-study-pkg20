@@ -1,5 +1,5 @@
 """
-py_uv_study_pkg20_250726 - 简单计算机器工具包
+pkg20 - 简单计算机器工具包
 """
 
 from .processor import Calculator

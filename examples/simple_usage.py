@@ -4,7 +4,7 @@
 直接导入已安装的包
 """
 
-from py_uv_study_pkg20_250726 import Calculator
+from pkg20 import Calculator
 
 
 def main():

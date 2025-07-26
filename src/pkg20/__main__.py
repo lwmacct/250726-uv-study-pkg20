@@ -1,6 +1,6 @@
 """
 包的主入口点
-当使用 python -m py_uv_study_pkg20_250726 时执行
+当使用 python -m pkg20 时执行
 """
 
 from .processor import Calculator

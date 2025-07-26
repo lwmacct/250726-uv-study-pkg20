@@ -1,4 +1,4 @@
-# py_uv_study_pkg20_250726
+# pkg20
 
 一个使用 `uv` 构建的Python数据处理工具包。
 
@@ -35,7 +35,7 @@ pip install -e .
 ### 基本使用
 
 ```python
-from py_uv_study_pkg20_250726 import DataProcessor
+from pkg20 import DataProcessor
 
 # 创建处理器
 processor = DataProcessor("my_processor")
@@ -61,7 +61,7 @@ print(json_str)
 
 ```bash
 # 使用uv运行包演示
-uv run python -m py_uv_study_pkg20_250726
+uv run python -m pkg20
 
 # 运行示例
 uv run python examples/simple_usage.py
@@ -161,9 +161,9 @@ uv run python examples/simple_usage.py
 ### 项目结构
 
 ```
-py_uv_study_pkg20_250726/
+pkg20/
 ├── src/
-│   └── py_uv_study_pkg20_250726/
+│   └── pkg20/
 │       ├── __init__.py          # 包入口
 │       ├── processor.py         # 核心功能模块
 │       └── __main__.py          # 命令行入口
