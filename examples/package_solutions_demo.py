@@ -5,7 +5,7 @@
 """
 
 import pkg20
-from pkg20.utils.package_info import (
+from pkg20.package_info import (
     get_package_info,
     get_version,
     get_author,

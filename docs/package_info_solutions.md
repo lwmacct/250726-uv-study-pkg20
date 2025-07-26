@@ -177,17 +177,30 @@ except ImportError:
 
 ```python
 # src/pkg20/__init__.py
-try:
-    from importlib.metadata import version, metadata
-    __version__ = version("pkg20")
-    package_metadata = metadata("pkg20")
-    __author__ = package_metadata.get("Author", "lwmacct")
-except ImportError:
-    __version__ = "0.1.1"
-    __author__ = "lwmacct"
-except Exception:
-    __version__ = "0.1.1"
-    __author__ = "lwmacct"
+from .processor import Calculator
+from .package_info import get_current_package_info
+
+# 自动获取包信息
+__version__, __author__ = get_current_package_info()
+
+__all__ = ["Calculator"]
+```
+
+```python
+# src/pkg20/package_info.py
+def get_current_package_info():
+    """获取当前包的信息（版本和作者）"""
+    # 直接使用 __package__ 或 __name__ 获取包名
+    import sys
+    package_name = None
+    
+    # 从当前模块获取包名
+    if '__package__' in globals():
+        package_name = globals()['__package__']
+    elif '__name__' in globals():
+        package_name = globals()['__name__'].split('.')[0]
+    
+    return get_package_info(package_name)
 ```
 
 ### 优势
@@ -199,10 +212,11 @@ except Exception:
 
 ### 提供的工具
 
-1. **工具模块**：`src/pkg20/utils/package_info.py`
+1. **工具模块**：`src/pkg20/package_info.py`
    - 封装了包信息获取功能
    - 提供了多种便捷函数
    - 支持自定义默认值
+   - 位于同级目录，便于直接调用
 
 2. **模板文件**：`templates/universal_init_template.py`
    - 可直接复制到其他项目使用

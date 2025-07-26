@@ -9,6 +9,9 @@
 # from .your_module import YourClass
 # from .another_module import AnotherClass
 
+# 导入包信息工具（可选）
+# from .package_info import get_current_package_info
+
 
 def _get_package_info():
     """
@@ -48,6 +51,9 @@ def _get_package_info():
 
 # 自动获取包信息
 __version__, __author__ = _get_package_info()
+
+# 或者使用工具模块（如果存在）
+# __version__, __author__ = get_current_package_info()
 
 # 定义导出的类和函数
 # 修改这个列表来包含你想要导出的类和函数
