@@ -23,6 +23,10 @@ def _get_package_info():
     Returns:
         tuple: (version, author)
     """
+    # 默认值配置
+    DEFAULT_VERSION = "0.1.0"
+    DEFAULT_AUTHOR = "Unknown"
+
     try:
         from importlib.metadata import version, metadata
         # 获取当前包名（通过 __package__ 或 __name__）
@@ -31,15 +35,15 @@ def _get_package_info():
         # 获取版本和作者信息
         __version__ = version(package_name)
         package_metadata = metadata(package_name)
-        __author__ = package_metadata.get("Author", "Unknown")
+        __author__ = package_metadata.get("Author", DEFAULT_AUTHOR)
 
         return __version__, __author__
     except ImportError:
-        # 兼容性处理：如果 importlib.metadata 不可用，使用硬编码值
-        return "0.1.0", "Unknown"
+        # 兼容性处理：如果 importlib.metadata 不可用，使用默认值
+        return DEFAULT_VERSION, DEFAULT_AUTHOR
     except Exception:
         # 如果获取失败，使用默认值
-        return "0.1.0", "Unknown"
+        return DEFAULT_VERSION, DEFAULT_AUTHOR
 
 
 # 自动获取包信息
