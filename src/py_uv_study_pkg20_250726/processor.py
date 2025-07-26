@@ -1,130 +1,196 @@
 """
-数据处理模块
-提供DataProcessor类用于各种数据处理和转换功能
+简单计算机器模块
+提供基本的数学运算功能，主要用于测试包
 """
 
-from typing import List, Dict, Any
-import json
-from datetime import datetime
+from typing import List, Union, Dict, Any
 
 
-class DataProcessor:
-    """数据处理类，提供各种数据处理和转换功能"""
+class Calculator:
+    """简单计算机器类，提供基本的数学运算功能"""
 
     def __init__(self, name: str = "default"):
         """
-        初始化数据处理器
+        初始化计算机器
 
         Args:
-            name: 处理器名称
+            name: 计算器名称
         """
         self.name = name
-        self.processed_count = 0
-        self.data_history: List[Dict[str, Any]] = []
+        self.operation_count = 0
+        self.history: List[Dict[str, Any]] = []
 
-    def process_numbers(self, numbers: List[int]) -> Dict[str, Any]:
+    def add(
+        self, a: Union[int, float], b: Union[int, float]
+    ) -> Union[int, float]:
         """
-        处理数字列表，返回统计信息
+        加法运算
 
         Args:
-            numbers: 要处理的数字列表
+            a: 第一个数
+            b: 第二个数
 
         Returns:
-            包含统计信息的字典
+            两数之和
         """
-        if not numbers:
-            return {"error": "输入列表为空"}
-
-        result = {
-            "count": len(numbers),
-            "sum": sum(numbers),
-            "average": sum(numbers) / len(numbers),
-            "min": min(numbers),
-            "max": max(numbers),
-            "sorted": sorted(numbers)
-        }
-
-        self._record_operation("process_numbers", numbers, result)
+        result = a + b
+        self._record_operation("add", [a, b], result)
         return result
 
-    def filter_data(self, data: List[Any], condition: callable) -> List[Any]:
+    def subtract(
+        self, a: Union[int, float], b: Union[int, float]
+    ) -> Union[int, float]:
         """
-        根据条件过滤数据
+        减法运算
 
         Args:
-            data: 要过滤的数据列表
-            condition: 过滤条件函数
+            a: 被减数
+            b: 减数
 
         Returns:
-            过滤后的数据列表
+            两数之差
         """
-        filtered = [item for item in data if condition(item)]
+        result = a - b
+        self._record_operation("subtract", [a, b], result)
+        return result
 
-        self._record_operation("filter_data", data, filtered)
-        return filtered
-
-    def convert_to_json(self, data: Any) -> str:
+    def multiply(
+        self, a: Union[int, float], b: Union[int, float]
+    ) -> Union[int, float]:
         """
-        将数据转换为JSON字符串
+        乘法运算
 
         Args:
-            data: 要转换的数据
+            a: 第一个数
+            b: 第二个数
 
         Returns:
-            JSON字符串
+            两数之积
         """
-        try:
-            json_str = json.dumps(data, ensure_ascii=False, indent=2)
-            self._record_operation("convert_to_json", data, json_str)
-            return json_str
-        except Exception as e:
-            error_msg = f"转换失败: {str(e)}"
-            self._record_operation("convert_to_json", data, error_msg)
-            return error_msg
+        result = a * b
+        self._record_operation("multiply", [a, b], result)
+        return result
+
+    def divide(
+        self, a: Union[int, float], b: Union[int, float]
+    ) -> Union[int, float]:
+        """
+        除法运算
+
+        Args:
+            a: 被除数
+            b: 除数
+
+        Returns:
+            两数之商
+
+        Raises:
+            ZeroDivisionError: 当除数为0时
+        """
+        if b == 0:
+            raise ZeroDivisionError("除数不能为0")
+
+        result = a / b
+        self._record_operation("divide", [a, b], result)
+        return result
+
+    def power(
+        self, base: Union[int, float], exponent: Union[int, float]
+    ) -> Union[int, float]:
+        """
+        幂运算
+
+        Args:
+            base: 底数
+            exponent: 指数
+
+        Returns:
+            base的exponent次方
+        """
+        result = base ** exponent
+        self._record_operation("power", [base, exponent], result)
+        return result
+
+    def calculate_sum(
+        self, numbers: List[Union[int, float]]
+    ) -> Union[int, float]:
+        """
+        计算列表中所有数字的和
+
+        Args:
+            numbers: 数字列表
+
+        Returns:
+            所有数字的和
+        """
+        if not numbers:
+            return 0
+
+        result = sum(numbers)
+        self._record_operation("calculate_sum", numbers, result)
+        return result
+
+    def calculate_average(
+        self, numbers: List[Union[int, float]]
+    ) -> float:
+        """
+        计算列表中所有数字的平均值
+
+        Args:
+            numbers: 数字列表
+
+        Returns:
+            所有数字的平均值
+        """
+        if not numbers:
+            return 0.0
+
+        result = sum(numbers) / len(numbers)
+        self._record_operation("calculate_average", numbers, result)
+        return result
 
     def get_statistics(self) -> Dict[str, Any]:
         """
-        获取处理统计信息
+        获取计算器统计信息
 
         Returns:
             统计信息字典
         """
         return {
-            "processor_name": self.name,
-            "total_processed": self.processed_count,
-            "history_count": len(self.data_history),
-            "created_at": datetime.now().isoformat()
+            "calculator_name": self.name,
+            "total_operations": self.operation_count,
+            "history_count": len(self.history)
         }
-
-    def clear_history(self) -> None:
-        """清空处理历史"""
-        self.data_history.clear()
-        self.processed_count = 0
 
     def get_history(self) -> List[Dict[str, Any]]:
         """
-        获取处理历史
+        获取计算历史
 
         Returns:
             历史记录列表的副本
         """
-        return self.data_history.copy()
+        return self.history.copy()
+
+    def clear_history(self) -> None:
+        """清空计算历史"""
+        self.history.clear()
+        self.operation_count = 0
 
     def _record_operation(
-        self, operation: str, input_data: Any, output_data: Any
+        self, operation: str, inputs: List[Any], result: Any
     ) -> None:
         """
         记录操作历史（私有方法）
 
         Args:
             operation: 操作名称
-            input_data: 输入数据
-            output_data: 输出数据
+            inputs: 输入参数
+            result: 计算结果
         """
-        self.processed_count += 1
-        self.data_history.append({
-            "timestamp": datetime.now().isoformat(),
+        self.operation_count += 1
+        self.history.append({
             "operation": operation,
-            "input": input_data,
-            "output": output_data
+            "inputs": inputs,
+            "result": result,
+            "operation_number": self.operation_count
         })

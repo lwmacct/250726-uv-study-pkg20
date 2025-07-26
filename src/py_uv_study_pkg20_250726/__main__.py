@@ -3,40 +3,53 @@
 当使用 python -m py_uv_study_pkg20_250726 时执行
 """
 
-from .processor import DataProcessor
+from .processor import Calculator
 
 
 def main() -> None:
-    """主函数，演示DataProcessor类的使用"""
-    print("=== DataProcessor 演示 ===")
+    """主函数，演示Calculator类的使用"""
+    print("=== Calculator 演示 ===")
 
-    # 创建处理器实例
-    processor = DataProcessor("demo_processor")
+    # 创建计算器实例
+    calc = Calculator("demo_calculator")
 
-    # 演示数字处理
-    numbers = [10, 25, 8, 42, 15, 30]
-    print(f"\n1. 处理数字列表: {numbers}")
-    result = processor.process_numbers(numbers)
-    print(f"结果: {result}")
+    # 演示基本运算
+    print("\n1. 基本运算:")
+    print(f"   10 + 5 = {calc.add(10, 5)}")
+    print(f"   10 - 5 = {calc.subtract(10, 5)}")
+    print(f"   10 * 5 = {calc.multiply(10, 5)}")
+    print(f"   10 / 5 = {calc.divide(10, 5)}")
+    print(f"   2 ^ 8 = {calc.power(2, 8)}")
 
-    # 演示数据过滤
-    data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    print(f"\n2. 过滤偶数: {data}")
-    even_numbers = processor.filter_data(data, lambda x: x % 2 == 0)
-    print(f"偶数: {even_numbers}")
+    # 演示列表计算
+    numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    print("\n2. 列表计算:")
+    print(f"   数字列表: {numbers}")
+    print(f"   总和: {calc.calculate_sum(numbers)}")
+    print(f"   平均值: {calc.calculate_average(numbers):.2f}")
 
-    # 演示JSON转换
-    sample_data = {"name": "测试", "numbers": [1, 2, 3], "active": True}
-    print(f"\n3. 转换为JSON: {sample_data}")
-    json_result = processor.convert_to_json(sample_data)
-    print(f"JSON: {json_result}")
+    # 演示错误处理
+    print("\n3. 错误处理:")
+    try:
+        calc.divide(10, 0)
+    except ZeroDivisionError as e:
+        print(f"   10 / 0 错误: {e}")
 
     # 显示统计信息
     print("\n4. 统计信息:")
-    stats = processor.get_statistics()
-    print(f"处理器名称: {stats['processor_name']}")
-    print(f"总处理次数: {stats['total_processed']}")
-    print(f"历史记录数: {stats['history_count']}")
+    stats = calc.get_statistics()
+    print(f"   计算器名称: {stats['calculator_name']}")
+    print(f"   总操作次数: {stats['total_operations']}")
+    print(f"   历史记录数: {stats['history_count']}")
+
+    # 显示历史记录
+    print("\n5. 操作历史:")
+    history = calc.get_history()
+    for i, record in enumerate(history, 1):
+        print(
+            f"   {i}. {record['operation']}: "
+            f"{record['inputs']} = {record['result']}"
+        )
 
     print("\n=== 演示完成 ===")
 
